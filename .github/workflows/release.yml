@@ -10,8 +10,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: xmake-io/github-action-setup-xmake@v1
-        # with:
-        #   xmake-version: branch@master
 
       - uses: actions/cache@v4
         with:
@@ -36,25 +34,9 @@ jobs:
           path: |
             bin/
 
-  update-release-notes:
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - id: extract-release-notes
-        uses: ffurrer2/extract-release-notes@v2
-
-      - uses: softprops/action-gh-release@v1
-        with:
-          body: |
-            ${{ steps.extract-release-notes.outputs.release_notes }}
-
   upload-to-release:
     needs:
       - build
-      - update-release-notes
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -67,7 +49,7 @@ jobs:
           path: artifact
 
       - run: |
-          cp CHANGELOG.md LICENSE README.md artifact/
+          cp LICENSE README.md artifact/
 
       - run: |
           zip -r ../${{ github.event.repository.name }}-windows-x64.zip *
