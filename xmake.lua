@@ -3,9 +3,9 @@ add_rules("mode.debug", "mode.release")
 add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
 add_repositories("groupmountain-repo https://github.com/GroupMountain/xmake-repo.git")
 
-add_requires("levilamina 1.2.0", {configs = {target_type = "server"}})
+add_requires("levilamina 1.3.0", {configs = {target_type = "server"}})
 add_requires("levibuildscript 0.4.0")
-add_requires("gmlib 1.2.0-rc.1")
+add_requires("gmlib 1.3.0")
 
 if not has_config("vs_runtime") then
     set_runtimes("MD")
