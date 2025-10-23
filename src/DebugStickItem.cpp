@@ -1,7 +1,5 @@
 #include <gmlib/gm/ui/CustomForm.h>
 #include <gmlib/mc/locale/I18nAPI.h>
-#include <gmlib/mod/item/CustomItemRegistry.h>
-#include <gmlib/mod/item/base/ICustomItem.h>
 #include <ll/api/base/Containers.h>
 #include <ll/api/thread/ServerThreadExecutor.h>
 #include <ll/api/utils/StringUtils.h>
@@ -26,11 +24,13 @@
 #include <mc/world/level/block/WeirdoDirection.h>
 #include <mc/world/level/block/states/vanilla_states/VanillaStates.h>
 #include <mc/world/level/levelgen/structure/SensibleDirections.h>
+#include <modapi/item/CustomItemRegistry.h>
+#include <modapi/item/base/ICustomItem.h>
 #include <string>
 
 namespace DebugStick {
 
-class DebugStickItem : public gmlib::mod::ICustomItem {
+class DebugStickItem : public modapi::ICustomItem {
 public:
     enum class BlockUpdateFlag : uchar {
         None                = 0,
@@ -48,7 +48,7 @@ public:
 
     uint8_t getItemMaxStackSize() const override { return 1; }
 
-    gmlib::mod::ItemIcon getIcon() const override { return "stick"; }
+    modapi::ItemIcon getIcon() const override { return modapi::ItemIcon{"stick"}; }
 
     std::string getDisplayName() const override { return "item.debug_stick.name"; }
 
@@ -315,11 +315,11 @@ public:
                 }();
 
                 auto* block = (mEditBlocks[&player] = {pos, &player.getDimensionBlockSource().getBlock(pos)}).second;
-                auto  title = fmt::format("%{0}.name", block->mLegacyBlock->mDescriptionId.get());
+                auto  title = fmt::format("%{0}.name", block->mBlockType->mDescriptionId.get());
                 if (gmlib::I18nAPI::get(title) == title.substr(1)) {
                     title = fmt::format(
                         "%{0}.name",
-                        block->mLegacyBlock->asItemInstance(*block, nullptr).mItem->getDescriptionId()
+                        block->mBlockType->asItemInstance(*block, nullptr).mItem->getDescriptionId()
                     );
                 }
                 gmlib::ui::CustomForm form(title);
@@ -353,6 +353,6 @@ public:
 } // namespace DebugStick
 
 inline static auto GMLIB_CUSTOM_ITEM_DebugStickItem = []() -> bool {
-    gmlib::mod::CustomItemRegistry::getInstance().registerItem<DebugStick::DebugStickItem>();
+    modapi::CustomItemRegistry::getInstance().registerItem<DebugStick::DebugStickItem>();
     return true;
 }();

@@ -3,9 +3,10 @@ add_rules("mode.debug", "mode.release")
 add_repositories("liteldev-repo https://github.com/LiteLDev/xmake-repo.git")
 add_repositories("groupmountain-repo https://github.com/GroupMountain/xmake-repo.git")
 
-add_requires("levilamina 1.4.0", {configs = {target_type = "server"}})
-add_requires("levibuildscript 0.4.1")
-add_requires("gmlib 1.4.0")
+add_requires("levilamina 1.5.2", {configs = {target_type = "server"}})
+add_requires("levibuildscript 0.5.2")
+add_requires("gmlib 1.5.2")
+add_requires("modapi 0.1.1")
 
 if not has_config("vs_runtime") then
     set_runtimes("MD")
@@ -32,7 +33,8 @@ target("DebugStick")
     )
     add_packages(
         "levilamina",
-        "gmlib"
+        "gmlib",
+        "modapi"
     )
     set_exceptions("none")
     set_kind("shared")
